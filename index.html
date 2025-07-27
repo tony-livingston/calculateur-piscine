@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Calculateur doses piscine Pool Champion</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #6dd5fa, #2980b9);
+    overflow-x: hidden;
+    color: #003459;
+    display: flex;
+    justify-content: center;
+    padding: 2em 1em;
+  }
+
+  /* Animated waves background */
+  .waves {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 180px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%2300c6ff" fill-opacity="0.4" d="M0,224L48,218.7C96,213,192,203,288,176C384,149,480,107,576,112C672,117,768,171,864,197.3C960,224,1056,224,1152,197.3C1248,171,1344,117,1392,90.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
+    animation: waveMove 8s linear infinite;
+    z-index: -1;
+  }
+  @keyframes waveMove {
+    0% {background-position-x: 0;}
+    100% {background-position-x: 1000px;}
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.95);
+    max-width: 600px;
+    border-radius: 20px;
+    padding: 2.5em 3em 3em;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1;
+  }
+
+  h1 {
+    text-align: center;
+    color: #0077b6;
+    margin-bottom: 1.5em;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px #a2d5f2;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: #005f8a;
+    margin-top: 1.3em;
+  }
+
+  input[type="number"] {
+    width: 100%;
+    padding: 0.7em;
+    font-size: 1.1em;
+    border-radius: 12px;
+    border: 2px solid #00b4ff;
+    margin-top: 0.3em;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+  }
+  input[type="number"]:focus {
+    outline: none;
+    border-color: #0077b6;
+    background-color: #e6f4ff;
+  }
+
+  button {
+    margin-top: 2em;
+    width: 100%;
+    padding: 1em;
+    font-size: 1.2em;
+    font-weight: 700;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(90deg, #00c6ff, #0077b6);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 8px 20px #00a0ffaa;
+    transition: background 0.4s ease;
+  }
+  button:hover {
+    background: linear-gradient(90deg, #0077b6, #004a7f);
+  }
+
+  .result {
+    margin-top: 3em;
+    padding: 1.8em 2em;
+    border-radius: 16px;
+    background: #f0faff;
+    box-shadow: 0 8px 20px rgba(0, 118, 255, 0.15);
+    color: #004a7f;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.7s ease, max-height 0.7s ease;
+  }
+  .result.visible {
+    opacity: 1;
+    max-height: 1000px;
+  }
+  .result h2 {
+    text-align: center;
+    margin-bottom: 1em;
+    font-weight: 700;
+    border-bottom: 3px solid #00aaff;
+    padding-bottom: 0.3em;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6em 0;
+    border-bottom: 1px solid #a4d8ff55;
+    font-size: 1.1em;
+  }
+  li strong {
+    color: #0077b6;
+    display: flex;
+    align-items: center;
+  }
+  li span.emoji {
+    margin-right: 0.6em;
+    font-size: 1.4em;
+  }
+
+  #mode-emploi {
+    margin-top: 2em;
+    background: #d4f0ffcc;
+    border-radius: 16px;
+    padding: 1.5em 2em;
+    color: #004a99;
+    font-size: 1.05em;
+    line-height: 1.45;
+    box-shadow: inset 0 0 12px #0077ccaa;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 0.7s ease, max-height 0.7s ease;
+  }
+  #mode-emploi.visible {
+    opacity: 1;
+    max-height: 1500px;
+  }
+  #mode-emploi h3 {
+    margin-top: 0;
+    text-align: center;
+    font-weight: 700;
+    color: #003459;
+    border-bottom: 2px solid #00aaff;
+    padding-bottom: 0.4em;
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 2em 1.5em 2.5em;
+    }
+    input[type="number"] {
+      font-size: 1em;
+    }
+    button {
+      font-size: 1.1em;
+    }
+    li {
+      font-size: 1em;
+    }
+    #mode-emploi {
+      font-size: 0.95em;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="waves"></div>
+  <div class="container">
+    <h1>Calculateur doses piscine Pool Champion</h1>
+
+    <label for="volume">Volume piscine (m³) :</label>
+    <input type="number" id="volume" step="0.001" min="0" placeholder="Ex : 4.383" />
+
+    <label for="ph_actuel">pH actuel (bandelette) :</label>
+    <input type="number" id="ph_actuel" step="0.01" min="0" max="14" placeholder="Ex : 7.2" />
+
+    <label for="chlore_actuel">Chlore actuel (mg/L) :</label>
+    <input type="number" id="chlore_actuel" step="0.01" min="0" placeholder="Ex : 0.8" />
+
+    <button onclick="calculerDoses()">Calculer</button>
+
+    <div class="result" id="resultats">
+      <h2>Résultats</h2>
+      <ul id="listeDoses"></ul>
+    </div>
+
+    <div id="mode-emploi">
+      <h3>Mode d’emploi</h3>
+      <p><strong>pH- granulés :</strong> Dissoudre la dose calculée dans un seau d'eau, puis verser lentement autour de la piscine. Ne pas verser directement dans le skimmer. Attendre 4 heures avant de tester à nouveau.</p>
+      <p><strong>pH+ granulés :</strong> Procéder de la même façon que pour le pH-, en veillant à bien diluer.</p>
+      <p><strong>Chlore choc granulés :</strong> Répandre uniformément dans l'eau de la piscine, de préférence le soir ou quand la piscine n'est pas utilisée. Attendre 12 heures avant baignade. Ce traitement sert à remonter rapidement le taux de chlore en cas de besoin (après baignade intensive, pluie, apparition d’algues, etc.).</p>
+      <p><strong>Chlore lent multifonctions (pastilles 200 g) :</strong> Placer les pastilles dans un diffuseur flottant ou le skimmer. Ce produit se dissout très lentement, sur plusieurs jours, pour maintenir un taux stable et régulier de chlore. Il est conseillé de l’utiliser en continu en complément du chlore choc, pour éviter les variations brusques du taux de chlore.</p>
+      <p><strong>Anti-algues liquide :</strong> Verser la dose recommandée directement dans l’eau de la piscine, de préférence en début de journée. Peut être utilisé en prévention ou en traitement.</p>
+    </div>
+  </div>
+
+<script>
+  function calculerDoses() {
+    const volume = parseFloat(document.getElementById("volume").value);
+    const phActuel = parseFloat(document.getElementById("ph_actuel").value);
+    const chloreActuel = parseFloat(document.getElementById("chlore_actuel").value);
+
+    const phSouhaite = 7.2;
+    const chloreSouhaite = 2.0;
+
+    if (isNaN(volume) || volume <= 0) {
+      alert("Merci d'indiquer un volume valide (> 0).");
+      return;
+    }
+    if (isNaN(phActuel) || phActuel < 0 || phActuel > 14) {
+      alert("Merci d'indiquer un pH actuel valide entre 0 et 14.");
+      return;
+    }
+    if (isNaN(chloreActuel) || chloreActuel < 0) {
+      alert("Merci d'indiquer un taux de chlore actuel valide (≥ 0).");
+      return;
+    }
+
+    const doses = [];
+
+    // pH
+    const deltaPH = phSouhaite - phActuel;
+    if (deltaPH < 0) {
+      doses.push({
+        produit: "pH- granulés",
+        emoji: "🔻",
+        dose: (200 * (Math.abs(deltaPH) / 0.2) * (volume / 10)).toFixed(2) + " g (pour baisser le pH de " + Math.abs(deltaPH).toFixed(2) + ")"
+      });
+      doses.push({ produit: "pH+ granulés", emoji: "🔼", dose: "Non nécessaire" });
+    } else if (deltaPH > 0) {
+      doses.push({ produit: "pH- granulés", emoji: "🔻", dose: "Non nécessaire" });
+      doses.push({
+        produit: "pH+ granulés",
+        emoji: "🔼",
+        dose: (200 * (deltaPH / 0.2) * (volume / 10)).toFixed(2) + " g (pour augmenter le pH de " + deltaPH.toFixed(2) + ")"
+      });
+    } else {
+      doses.push({ produit: "pH- granulés", emoji: "🔻", dose: "Non nécessaire" });
+      doses.push({ produit: "pH+ granulés", emoji: "🔼", dose: "Non nécessaire" });
+    }
+
+    // Chlore
+    if (chloreActuel < chloreSouhaite) {
+      const diffChlore = chloreSouhaite - chloreActuel;
+      const doseChloreGranule = diffChlore * volume;
+      doses.push({
+        produit: "Chlore choc granulés",
+        emoji: "⚡",
+        dose: doseChloreGranule.toFixed(2) + " g (pour remonter le chlore de " + chloreActuel.toFixed(2) + " à " + chloreSouhaite.toFixed(2) + " mg/L)"
+      });
+    } else {
+      doses.push({
+        produit: "Chlore choc granulés",
+        emoji: "⚡",
+        dose: "Non nécessaire (chlore suffisant)"
+      });
+    }
+
+    // Dose hebdo chlore lent multifonctions
+    doses.push({
+      produit: "Chlore lent multifonctions (pastilles 200 g)",
+      emoji: "🟦",
+      dose: ((volume / 20) * 200).toFixed(2) + " g (~" + (volume / 20).toFixed(2) + " pastilles) par semaine"
+    });
+
+    // Anti-algues
+    doses.push({
+      produit: "Anti-algues liquide",
+      emoji: "💧",
+      dose: (10 * (volume / 10)).toFixed(2) + " mL (prévention ou traitement)"
+    });
+
+    const liste = document.getElementById("listeDoses");
+    liste.innerHTML = "";
+    doses.forEach(d => {
+      const li = document.createElement("li");
+      li.innerHTML = `<strong><span class="emoji">${d.emoji}</span>${d.produit}</strong> : ${d.dose}`;
+      liste.appendChild(li);
+    });
+
+    const resultDiv = document.getElementById("resultats");
+    const modeDiv = document.getElementById("mode-emploi");
+    // Affichage animé
+    resultDiv.classList.add("visible");
+    modeDiv.classList.add("visible");
+  }
+</script>
+</body>
+</html>
+
